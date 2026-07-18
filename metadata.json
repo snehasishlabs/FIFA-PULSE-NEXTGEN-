@@ -1,0 +1,6 @@
+{
+  "name": "FIFA Pulse AI NextGen",
+  "description": "GenAI-enabled stadium operations and tournament experience platform for FIFA World Cup 2026.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
