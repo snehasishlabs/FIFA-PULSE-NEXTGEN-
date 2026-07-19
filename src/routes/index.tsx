@@ -28,10 +28,10 @@ function ViewSuspense({ children }: { children: React.ReactNode }) {
 }
 
 export default function AppRouter() {
-  const { changeRole, loading } = useApp();
+  const { currentUser, changeRole, loading } = useApp();
 
-  const handleLogin = (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => {
-    changeRole(role, name);
+  const handleLogin = async (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => {
+    await changeRole(role, name);
   };
 
   return (
@@ -42,9 +42,13 @@ export default function AppRouter() {
         <Route 
           path="/login" 
           element={
-            <ViewSuspense>
-              <Login onLogin={handleLogin} loading={loading} />
-            </ViewSuspense>
+            currentUser ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <ViewSuspense>
+                <Login onLogin={handleLogin} loading={loading} />
+              </ViewSuspense>
+            )
           } 
         />
 

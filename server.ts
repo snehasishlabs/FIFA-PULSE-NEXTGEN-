@@ -32,7 +32,7 @@ app.use(helmet({
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  max: 10000, // limit each IP to 10000 requests per windowMs
   standardHeaders: true,
   legacyHeaders: false,
   validate: false,
@@ -123,12 +123,12 @@ const stadiums = [
 ];
 
 // Active user session simulation (role toggleable via UI for evaluation)
-let activeUser = {
-  id: "user-123",
-  email: "ops.director@fifapulse.ai",
-  role: "operations" as "admin" | "operations" | "venue_staff" | "volunteer" | "fan",
-  name: "Operations Director"
-};
+let activeUser: {
+  id: string;
+  email: string;
+  role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan';
+  name: string;
+} | null = null;
 
 // Real-time Stadium Metrics
 let stadiumMetrics: Record<string, any> = {
@@ -437,13 +437,23 @@ const SetRoleSchema = z.object({
 app.post("/api/auth/set-role", (req, res) => {
   try {
     const body = SetRoleSchema.parse(req.body);
-    activeUser.role = body.role;
-    activeUser.name = body.name;
+    activeUser = {
+      id: "user-123",
+      email: `${body.role}@fifapulse.ai`,
+      role: body.role,
+      name: body.name
+    };
     res.json({ status: "success", user: activeUser });
     broadcastStateUpdate("AUTH_UPDATE", activeUser);
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  activeUser = null;
+  res.json({ status: "success" });
+  broadcastStateUpdate("AUTH_UPDATE", null);
 });
 
 // Stadiums List
@@ -853,7 +863,7 @@ app.post("/api/ai-assistant/chat", async (req, res) => {
     const transit = transportUpdates.filter(t => t.stadiumId === context.activeStadiumId);
 
     const prompt = `You are the FIFA Pulse AI NextGen Assistant, a staff-facing operations intelligence officer for the FIFA World Cup 2026.
-You are assisting ${activeUser.name} holding the operational role: '${context.role.toUpperCase()}'.
+You are assisting ${activeUser?.name || "Guest"} holding the operational role: '${context.role.toUpperCase()}'.
 The user is viewing stadium: ${context.stadiumName}.
 
 CURRENT REAL-TIME STADIUM METRICS:

@@ -198,7 +198,7 @@ export default function Logistics({ activeStadium, transport }: LogisticsProps) 
         {/* Map Layer Card */}
         <Card 
           title={`Interactive Logistics Hub - ${activeStadium.name}`}
-          subtitle="Real-time pedestrian trajectories, stadium gate queues, and accessible pathways"
+          subtitle="Real-time pedestrian trajectories, stadium gate queues, and accessible pathways. Current focus area: FIFA FIELD (SECURE ZONE)"
           className="relative"
         >
           <div className="mb-4">

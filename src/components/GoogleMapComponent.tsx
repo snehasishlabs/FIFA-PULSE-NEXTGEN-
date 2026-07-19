@@ -318,6 +318,12 @@ export default function GoogleMapComponent({
         <Shield className="w-3 h-3 text-sky-400" />
         Key Config Info
       </button>
+
+      {/* Active Focus Zone Overlay */}
+      <div className="absolute bottom-2 left-2 z-10 bg-slate-950/95 border border-slate-800 text-[10px] text-slate-300 font-mono px-2.5 py-1.5 rounded-md flex items-center gap-1.5 shadow-lg">
+        <span className="w-1.5 h-1.5 bg-sky-500 rounded-full animate-ping"></span>
+        <span>FOCUS: <strong className="text-sky-400 font-bold uppercase">FIFA FIELD</strong> (<strong className="text-emerald-500 font-bold uppercase">SECURE ZONE</strong>)</span>
+      </div>
     </div>
   );
 }

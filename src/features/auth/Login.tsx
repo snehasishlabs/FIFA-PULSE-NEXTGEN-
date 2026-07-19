@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { Activity, ShieldAlert, Key, Mail, Shield, User as UserIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 
 interface LoginProps {
-  onLogin: (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => void;
+  onLogin: (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => void | Promise<void>;
   loading?: boolean;
 }
 
 export default function Login({ onLogin, loading = false }: LoginProps) {
+  let navigate: any;
+  try {
+    navigate = useNavigate();
+  } catch (e) {
+    navigate = () => {};
+  }
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,7 +40,7 @@ export default function Login({ onLogin, loading = false }: LoginProps) {
     setError(null);
 
     // Simulate Supabase authentication verification
-    setTimeout(() => {
+    setTimeout(async () => {
       setIsSubmitting(false);
       // Map demo accounts based on email prefix or default to operations
       let role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan' = 'operations';
@@ -54,7 +61,8 @@ export default function Login({ onLogin, loading = false }: LoginProps) {
         name = 'Fan (Ticket Holder)';
       }
 
-      onLogin(role, name);
+      await onLogin(role, name);
+      navigate('/dashboard');
     }, 800);
   };
 
@@ -78,8 +86,9 @@ export default function Login({ onLogin, loading = false }: LoginProps) {
     }, 800);
   };
 
-  const handleQuickAccess = (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => {
-    onLogin(role, name);
+  const handleQuickAccess = async (role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan', name: string) => {
+    await onLogin(role, name);
+    navigate('/dashboard');
   };
 
   const rolesList: { role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan'; name: string; email: string }[] = [

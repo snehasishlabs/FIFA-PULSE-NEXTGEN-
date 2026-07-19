@@ -29,11 +29,14 @@ export default function Simulator({
     setIsSimulating(true);
 
     try {
-      await runSimulation({
-        stadiumId: activeStadium?.id || '',
-        scenarioType,
-        intensity
-      });
+      await Promise.all([
+        runSimulation({
+          stadiumId: activeStadium?.id || '',
+          scenarioType,
+          intensity
+        }),
+        new Promise(resolve => setTimeout(resolve, 1000))
+      ]);
     } catch (err) {
       console.error("Simulation trigger failed", err);
     } finally {
