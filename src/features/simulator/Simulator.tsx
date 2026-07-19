@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Stadium, Simulation } from '../../types';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
@@ -10,6 +10,23 @@ interface SimulatorProps {
   userRole: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan';
   runSimulation: (data: { stadiumId: string; scenarioType: Simulation['scenarioType']; intensity: Simulation['intensity'] }) => Promise<boolean>;
 }
+
+const getScenarioLabel = (type: string) => {
+  switch (type) {
+    case 'emergency_evacuation': return 'Emergency Evacuation Drill';
+    case 'crowd_surge': return 'Crowd Surge Stress Test';
+    case 'weather_disruption': return 'Severe Weather Sheltering';
+    default: return 'Resource Saturation Overload';
+  }
+};
+
+const getIntensityBadge = (lvl: string) => {
+  switch (lvl) {
+    case 'extreme': return 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
+    case 'high': return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
+    default: return 'bg-sky-500/10 text-sky-400 border border-sky-500/20';
+  }
+};
 
 export default function Simulator({
   activeStadium,
@@ -24,7 +41,7 @@ export default function Simulator({
   // Display only the most recent completed simulation's comprehensive breakdown
   const currentSimulation = simulations[0] || null;
 
-  const handleStartSimulation = async () => {
+  const handleStartSimulation = useCallback(async () => {
     if (isSimulating) return;
     setIsSimulating(true);
 
@@ -42,24 +59,7 @@ export default function Simulator({
     } finally {
       setIsSimulating(false);
     }
-  };
-
-  const getScenarioLabel = (type: string) => {
-    switch (type) {
-      case 'emergency_evacuation': return 'Emergency Evacuation Drill';
-      case 'crowd_surge': return 'Crowd Surge Stress Test';
-      case 'weather_disruption': return 'Severe Weather Sheltering';
-      default: return 'Resource Saturation Overload';
-    }
-  };
-
-  const getIntensityBadge = (lvl: string) => {
-    switch (lvl) {
-      case 'extreme': return 'bg-rose-500/10 text-rose-400 border border-rose-500/20';
-      case 'high': return 'bg-amber-500/10 text-amber-400 border border-amber-500/20';
-      default: return 'bg-sky-500/10 text-sky-400 border border-sky-500/20';
-    }
-  };
+  }, [isSimulating, runSimulation, activeStadium?.id, scenarioType, intensity]);
 
   // Restrict access to administrators and operations managers, demonstrating RLS/role enforcement!
   if (userRole !== 'admin' && userRole !== 'operations') {

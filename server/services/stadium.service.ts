@@ -94,8 +94,8 @@ interface DbStadiumMetrics {
   attendance: number;
   crowd_density: number;
   stadium_health_score: number;
-  gate_congestion: any;
-  resource_utilization: any;
+  gate_congestion: Record<string, 'low' | 'medium' | 'high'>;
+  resource_utilization: Record<string, number>;
   created_at: string;
   updated_at: string;
 }
@@ -118,7 +118,7 @@ export class StadiumService {
         return fallbackStadiums;
       }
 
-      return (data as any[]).map(s => ({
+      return (data as DbStadium[]).map(s => ({
         id: s.id,
         name: s.name,
         city: s.city,
