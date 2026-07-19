@@ -65,19 +65,25 @@ export default function DashboardPage() {
   const warningsCount = notifications.filter(n => !n.isRead && n.type === 'ai_warning').length;
 
   // Gate breakdown
-  const gates = Object.entries(activeMetrics.gateCongestion).map(([gateName, status]) => ({
-    name: gateName,
-    status
-  }));
+  const gates = useMemo(() => {
+    return Object.entries(activeMetrics.gateCongestion).map(([gateName, status]) => ({
+      name: gateName,
+      status
+    }));
+  }, [activeMetrics.gateCongestion]);
 
-  const filteredGates = gates.filter(g => activeGateFilter === 'all' || g.status === activeGateFilter);
+  const filteredGates = useMemo(() => {
+    return gates.filter(g => activeGateFilter === 'all' || g.status === activeGateFilter);
+  }, [gates, activeGateFilter]);
 
-  const resourceData = [
-    { name: 'Security', value: activeMetrics.resourceUtilization.security },
-    { name: 'Medical', value: activeMetrics.resourceUtilization.medical },
-    { name: 'Concessions', value: activeMetrics.resourceUtilization.concessions },
-    { name: 'Transport', value: activeMetrics.resourceUtilization.transport }
-  ];
+  const resourceData = useMemo(() => {
+    return [
+      { name: 'Security', value: activeMetrics.resourceUtilization.security },
+      { name: 'Medical', value: activeMetrics.resourceUtilization.medical },
+      { name: 'Concessions', value: activeMetrics.resourceUtilization.concessions },
+      { name: 'Transport', value: activeMetrics.resourceUtilization.transport }
+    ];
+  }, [activeMetrics.resourceUtilization]);
 
   return (
     <div className="space-y-6">

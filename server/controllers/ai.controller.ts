@@ -22,8 +22,9 @@ export class AIController {
       const recommendation = await AIService.generateRecommendations(stadiumId);
       
       sendSuccess(res, { recommendation });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to generate AI recommendations.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to generate AI recommendations.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -34,7 +35,7 @@ export class AIController {
     try {
       const schema = z.object({
         stadiumId: z.string().min(1, "Stadium ID is required"),
-        parameters: z.record(z.string(), z.any()).default({})
+        parameters: z.record(z.string(), z.unknown()).default({})
       });
 
       const parsed = schema.safeParse(req.body);
@@ -43,11 +44,12 @@ export class AIController {
       }
 
       const { stadiumId, parameters } = parsed.data;
-      const analysisResult = await AIService.performOperationalAnalysis(stadiumId, parameters);
+      const analysisResult = await AIService.performOperationalAnalysis(stadiumId, parameters as Record<string, string | number | boolean>);
       
       sendSuccess(res, analysisResult);
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to perform AI operational analysis.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to perform AI operational analysis.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -70,8 +72,9 @@ export class AIController {
       const emergencyProtocol = await AIService.synthesizeEmergencyResponse(incidentId, details);
       
       sendSuccess(res, emergencyProtocol);
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to synthesize emergency response protocol.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to synthesize emergency response protocol.";
+      sendError(res, msg, 500);
     }
   }
 }

@@ -81,21 +81,38 @@ export function useRealTimeData() {
   useEffect(() => {
     fetchInitialData();
 
+    let retryAttempt = 0;
+    let reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+
     const connectSSE = () => {
-      if (sseRef.current) sseRef.current.close();
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+        reconnectTimer = null;
+      }
+      if (sseRef.current) {
+        sseRef.current.close();
+      }
 
       const sse = new EventSource('/api/realtime/stream');
       sseRef.current = sse;
 
       sse.onopen = () => {
         setIsConnected(true);
+        retryAttempt = 0; // Reset retry count on successful connection
         console.log("Supabase Realtime Subscription active: Connected to FIFA Pulse Live Stream");
       };
 
       sse.onerror = () => {
         setIsConnected(false);
-        console.warn("Real-time stream interrupted. Retrying connection...");
-        setTimeout(connectSSE, 5000);
+        console.warn("Real-time stream interrupted. Retrying connection with exponential backoff...");
+        
+        const delay = Math.min(30000, Math.pow(2, retryAttempt) * 1000);
+        retryAttempt++;
+        
+        if (reconnectTimer) {
+          clearTimeout(reconnectTimer);
+        }
+        reconnectTimer = setTimeout(connectSSE, delay);
       };
 
       sse.onmessage = (event) => {
@@ -161,8 +178,12 @@ export function useRealTimeData() {
     connectSSE();
 
     return () => {
+      if (reconnectTimer) {
+        clearTimeout(reconnectTimer);
+      }
       if (sseRef.current) {
         sseRef.current.close();
+        sseRef.current = null;
       }
     };
   }, [fetchInitialData]);

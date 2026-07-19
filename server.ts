@@ -30,6 +30,17 @@ app.use(helmet({
   frameguard: false,
 }));
 
+// Robust CORS headers configuration
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 10000, // limit each IP to 10000 requests per windowMs
@@ -38,6 +49,18 @@ const limiter = rateLimit({
   validate: false,
 });
 app.use("/api/", limiter);
+
+// Restrictive rate limiter specifically for heavy GenAI endpoints
+const aiLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 15, // limit each IP to 15 requests per minute on AI endpoints
+  message: { success: false, message: "Too many requests to AI Copilot. Please try again in a minute." },
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: false,
+});
+app.use("/api/ai-assistant/", aiLimiter);
+app.use("/api/simulations/", aiLimiter);
 
 app.use(express.json());
 

@@ -6,12 +6,13 @@ export class StadiumController {
   /**
    * Lists all stadiums.
    */
-  static async listStadiums(req: Request, res: Promise<Response> | any): Promise<void> {
+  static async listStadiums(req: Request, res: Response): Promise<void> {
     try {
       const stadiums = await StadiumService.getAllStadiums();
       sendSuccess(res, { stadiums });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve stadiums.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve stadiums.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -31,8 +32,9 @@ export class StadiumController {
       }
 
       sendSuccess(res, { stadium });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve stadium.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve stadium.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -52,8 +54,9 @@ export class StadiumController {
       }
 
       sendSuccess(res, { metrics });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve stadium metrics.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve stadium metrics.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -74,8 +77,9 @@ export class StadiumController {
       const { incidents, total } = await StadiumService.getStadiumIncidents(id, limit, offset);
 
       sendSuccess(res, { incidents }, 200, { page, limit, total });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve stadium incidents.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve stadium incidents.";
+      sendError(res, msg, 500);
     }
   }
 }

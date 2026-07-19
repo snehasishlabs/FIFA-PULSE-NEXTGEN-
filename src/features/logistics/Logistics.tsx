@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 import { Stadium, TransportUpdate, NavigationStep, NavigationAlternative, NavigationRoutePlan, ChatMessage } from '../../types';
 import Card from '../../components/Card';
-import GoogleMapComponent from '../../components/GoogleMapComponent';
+
+const GoogleMapComponent = lazy(() => import('../../components/GoogleMapComponent'));
 import { 
   Bus, 
   Leaf, 
@@ -202,13 +203,19 @@ export default function Logistics({ activeStadium, transport }: LogisticsProps) 
           className="relative"
         >
           <div className="mb-4">
-            <GoogleMapComponent 
-              lat={activeStadium.latitude} 
-              lng={activeStadium.longitude} 
-              stadiumId={activeStadium.id}
-              pathCoordinates={routePlan?.pathCoordinates}
-              routeType={routeType}
-            />
+            <Suspense fallback={
+              <div className="h-[400px] w-full bg-slate-950 rounded border border-slate-800 flex items-center justify-center">
+                <span className="text-slate-400 text-xs font-mono tracking-widest animate-pulse">LOADING MAP LAYERS...</span>
+              </div>
+            }>
+              <GoogleMapComponent 
+                lat={activeStadium.latitude} 
+                lng={activeStadium.longitude} 
+                stadiumId={activeStadium.id}
+                pathCoordinates={routePlan?.pathCoordinates}
+                routeType={routeType}
+              />
+            </Suspense>
           </div>
 
           <div className="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">

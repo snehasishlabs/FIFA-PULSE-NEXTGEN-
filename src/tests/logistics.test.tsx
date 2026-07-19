@@ -4,6 +4,14 @@ import { describe, test, expect, vi, beforeEach } from 'vitest';
 import Logistics from '../features/logistics/Logistics';
 import { Stadium, TransportUpdate } from '../types';
 
+vi.mock('../../components/GoogleMapComponent', () => {
+  return {
+    default: function MockGoogleMapComponent() {
+      return <div data-testid="google-map-default">Mocked Google Map</div>;
+    }
+  };
+});
+
 describe('Logistics Center & AI Navigation Module Tests', () => {
   const mockStadium: Stadium = {
     id: 'stadium-metlife',
@@ -66,11 +74,11 @@ describe('Logistics Center & AI Navigation Module Tests', () => {
     vi.clearAllMocks();
   });
 
-  test('renders base map container and transport operational grids', () => {
+  test('renders base map container and transport operational grids', async () => {
     render(<Logistics activeStadium={mockStadium} transport={mockTransport} />);
 
     // Interactive map
-    expect(screen.getByTestId('google-map-default')).toBeInTheDocument();
+    expect(await screen.findByTestId('google-map-default')).toBeInTheDocument();
 
     // Transport hubs
     expect(screen.getByText('MetLife Express Line A')).toBeInTheDocument();

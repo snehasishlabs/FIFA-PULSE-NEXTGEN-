@@ -9,7 +9,7 @@ interface LoginProps {
 }
 
 export default function Login({ onLogin, loading = false }: LoginProps) {
-  let navigate: any;
+  let navigate: (path: string) => void;
   try {
     navigate = useNavigate();
   } catch (e) {

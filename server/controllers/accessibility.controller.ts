@@ -15,8 +15,9 @@ export class AccessibilityController {
       const { services, total } = await AccessibilityServiceClass.getAllServices(limit, offset);
       
       sendSuccess(res, { services }, 200, { page, limit, total });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve accessibility services.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve accessibility services.";
+      sendError(res, msg, 500);
     }
   }
 
@@ -32,8 +33,9 @@ export class AccessibilityController {
 
       const services = await AccessibilityServiceClass.getServicesByStadium(stadiumId);
       sendSuccess(res, { services });
-    } catch (err: any) {
-      sendError(res, err.message || "Failed to retrieve stadium accessibility services.", 500);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retrieve stadium accessibility services.";
+      sendError(res, msg, 500);
     }
   }
 }

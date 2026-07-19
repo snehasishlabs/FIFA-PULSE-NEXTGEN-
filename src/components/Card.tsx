@@ -9,7 +9,7 @@ interface CardProps {
   actions?: React.ReactNode;
 }
 
-export default function Card({ id, title, subtitle, children, className = '', actions }: CardProps) {
+const Card = React.memo(function Card({ id, title, subtitle, children, className = '', actions }: CardProps) {
   return (
     <div
       id={id}
@@ -27,4 +27,6 @@ export default function Card({ id, title, subtitle, children, className = '', ac
       {children}
     </div>
   );
-}
+});
+
+export default Card;

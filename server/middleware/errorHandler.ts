@@ -22,7 +22,7 @@ export class AppError extends Error {
  * Centralized Express error handling middleware.
  */
 export function errorHandler(
-  err: any,
+  err: Error & { statusCode?: number; status?: number; code?: string },
   req: Request,
   res: Response,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -88,7 +88,7 @@ export function setupProcessHandlers(): void {
     }
   });
 
-  process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
+  process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) => {
     console.error('FATAL [unhandledRejection] at:', promise, 'reason:', reason);
     if (reason instanceof Error) {
       console.error(reason.stack || 'No stack trace available');
