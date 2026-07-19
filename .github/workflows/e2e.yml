@@ -26,7 +26,7 @@ jobs:
       run: npx playwright install --with-deps chromium
 
     - name: Run E2E tests using the standalone shell runner
-      run: ./run-e2e.sh
+      run: bash ./run-e2e.sh
 
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4
