@@ -143,7 +143,7 @@ export default function GoogleMapComponent({
   // 1. High fidelity SVG spatial fallback when no Google Maps key is specified
   if (showMockMap) {
     return (
-      <div className="relative w-full h-[400px] bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col justify-between p-4 font-sans">
+      <div data-testid="google-map-default" className="relative w-full h-[400px] bg-slate-900 border border-slate-800 rounded-xl overflow-hidden flex flex-col justify-between p-4 font-sans">
         <div className="absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-40"></div>
         
         {/* Mock Map Stadium Visualization */}
