@@ -103,7 +103,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         metrics={mockMetrics}
         incidents={mockIncidents}
         userRole="operations"
-        userName="Snehasish (Ops Director)"
+        userName="Operations Director"
         reportIncident={vi.fn()}
         resolveIncident={vi.fn()}
       />
@@ -130,7 +130,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         metrics={mockMetrics}
         incidents={[]}
         userRole="operations"
-        userName="Snehasish"
+        userName="Operations Director"
         reportIncident={vi.fn()}
         resolveIncident={vi.fn()}
       />
@@ -152,7 +152,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         metrics={mockMetrics}
         incidents={mockIncidents}
         userRole="operations"
-        userName="Snehasish"
+        userName="Operations Director"
         reportIncident={vi.fn()}
         resolveIncident={vi.fn()}
       />
@@ -171,7 +171,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         metrics={mockMetrics}
         incidents={[]}
         userRole="operations"
-        userName="Snehasish"
+        userName="Operations Director"
         reportIncident={mockReportIncident}
         resolveIncident={vi.fn()}
       />
@@ -207,7 +207,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         category: 'crowd', // default option value
         severity: 'medium', // default option value
         location: 'Lower Tier 10A',
-        reporterName: 'Snehasish',
+        reporterName: 'Operations Director',
       });
     });
   });
@@ -220,7 +220,7 @@ describe('CommandCenter Dashboard Module Tests', () => {
         metrics={mockMetrics}
         incidents={mockIncidents}
         userRole="operations"
-        userName="Snehasish"
+        userName="Operations Director"
         reportIncident={vi.fn()}
         resolveIncident={mockResolveIncident}
       />

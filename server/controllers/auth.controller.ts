@@ -21,7 +21,7 @@ export class AuthController {
     const { id, email, role } = req.user;
     const supabase = getSupabaseAdmin();
     
-    let fullName = req.user.role === 'admin' ? 'Snehasish (Ops Director)' : 'Fifa Pulse Spectator';
+    let fullName = req.user.role === 'admin' ? 'Operations Director' : 'Fifa Pulse Spectator';
     let phone = '';
     let avatarUrl = '';
 

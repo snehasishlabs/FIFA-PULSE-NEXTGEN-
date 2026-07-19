@@ -87,7 +87,7 @@ export function testMockResponseSchemas() {
     success: true,
     data: {
       user: { id: 'u-1', email: 'director@fifapulse.ai', role: 'admin' },
-      profile: { fullName: 'Snehasish (Ops Director)', phone: '+12025550192', avatarUrl: 'https://avatar.com/1.png' }
+      profile: { fullName: 'Operations Director', phone: '+12025550192', avatarUrl: 'https://avatar.com/1.png' }
     }
   };
 

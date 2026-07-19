@@ -41,7 +41,7 @@ export async function requireAuth(req: Request, res: Response, next: NextFunctio
     // If Supabase is unconfigured, fallback to active default operator for local run comfort
     req.user = {
       id: "user-123",
-      email: "snehasish05.stu@gmail.com",
+      email: "ops.director@fifapulse.ai",
       role: "admin", // Admin default when Supabase is unconfigured in development
     };
     return next();

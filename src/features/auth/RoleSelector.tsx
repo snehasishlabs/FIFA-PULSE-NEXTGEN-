@@ -9,7 +9,7 @@ interface RoleSelectorProps {
 
 export default function RoleSelector({ currentUser, changeRole }: RoleSelectorProps) {
   const roles: { role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan'; name: string; desc: string }[] = [
-    { role: 'operations', name: 'Snehasish (Ops Director)', desc: 'Full stadium dashboard telemetry, command centre & simulator access.' },
+    { role: 'operations', name: 'Operations Director', desc: 'Full stadium dashboard telemetry, command centre & simulator access.' },
     { role: 'admin', name: 'Security Chief Elena', desc: 'Manage access controls, report incidents, and execute emergency evacuations.' },
     { role: 'venue_staff', name: 'Staff Supervisor Carlos', desc: 'Manage gates, concessions, elevators, and accessibility services.' },
     { role: 'volunteer', name: 'Volunteer PATHFINDER', desc: 'Direct crowd flows, report incidents, and monitor transport queues.' },

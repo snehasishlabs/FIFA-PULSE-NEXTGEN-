@@ -125,9 +125,9 @@ const stadiums = [
 // Active user session simulation (role toggleable via UI for evaluation)
 let activeUser = {
   id: "user-123",
-  email: "snehasish05.stu@gmail.com",
+  email: "ops.director@fifapulse.ai",
   role: "operations" as "admin" | "operations" | "venue_staff" | "volunteer" | "fan",
-  name: "Snehasish (Ops Director)"
+  name: "Operations Director"
 };
 
 // Real-time Stadium Metrics

@@ -37,7 +37,7 @@ export default function Login({ onLogin, loading = false }: LoginProps) {
       setIsSubmitting(false);
       // Map demo accounts based on email prefix or default to operations
       let role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan' = 'operations';
-      let name = 'Snehasish (Ops Director)';
+      let name = 'Operations Director';
 
       const lowerEmail = email.toLowerCase();
       if (lowerEmail.includes('admin') || lowerEmail.includes('security')) {
@@ -83,7 +83,7 @@ export default function Login({ onLogin, loading = false }: LoginProps) {
   };
 
   const rolesList: { role: 'admin' | 'operations' | 'venue_staff' | 'volunteer' | 'fan'; name: string; email: string }[] = [
-    { role: 'operations', name: 'Snehasish (Ops Director)', email: 'ops.director@fifapulse.ai' },
+    { role: 'operations', name: 'Operations Director', email: 'ops.director@fifapulse.ai' },
     { role: 'admin', name: 'Security Chief Elena', email: 'security.chief@fifapulse.ai' },
     { role: 'venue_staff', name: 'Staff Supervisor Carlos', email: 'staff.carlos@fifapulse.ai' },
     { role: 'volunteer', name: 'Volunteer PATHFINDER', email: 'volunteer.path@fifapulse.ai' },

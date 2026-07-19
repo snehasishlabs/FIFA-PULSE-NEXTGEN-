@@ -109,7 +109,7 @@ describe('Authentication Module Tests', () => {
 
     test('renders protected sub-routes when user is authenticated', () => {
       vi.mocked(useApp).mockReturnValue({
-        currentUser: { id: 'u1', email: 'director@fifapulse.ai', role: 'operations', name: 'Director Snehasish' },
+        currentUser: { id: 'u1', email: 'director@fifapulse.ai', role: 'operations', name: 'Operations Director' },
         loading: false,
       } as any);
 
